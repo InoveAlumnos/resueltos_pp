@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 
 import traceback
-from flask import Flask, request, make_response, jsonify, render_template, Response, redirect, url_for
+from flask import Flask, request, jsonify, render_template, Response
 
 
 # Crear el server Flask
@@ -50,7 +50,7 @@ def post():
             posts = []
             for post in Post.query.filter_by(username=username).order_by(Post.id.desc()).limit(3):
                 posts.append({"titulo": post.titulo, "texto": post.texto})
-            return make_response(jsonify({"posts": posts}), 200)
+            return jsonify({"posts": posts})
 
         if request.method == 'POST':
             username = request.form['username']
@@ -62,7 +62,7 @@ def post():
             db.session.add(post)
             db.session.commit()
 
-            return make_response(jsonify({"id": post.id, "titulo": post.titulo, "texto": post.texto}), 200)
+            return jsonify({"id": post.id, "titulo": post.titulo, "texto": post.texto})
 
     except Exception as e:
         print(e)
