@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        </head>
+    <body>
+        <div class="carGame">
+            <div class="score">
+
+            </div>
+            <div class="startScreen">
+				<h1>¡Carrera de Autos!</h1>
+                <p>Presiona para empezar<br>Si chocas pierdes...</p>
+            </div>
+            <div class="gameArea"></div>
+        </div>
+
+        <script>
+            const frecuencia = Number("{{frecuencia}}");
+            alert(frecuencia);
+        </script>
+        <script src="{{ url_for('static', filename='js/script.js') }}""></script>
+    </body>
+</html>
