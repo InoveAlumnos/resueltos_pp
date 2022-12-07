@@ -2,6 +2,9 @@ const score=document.querySelector('.score');
 const startScreen=document.querySelector('.startScreen');
 const gameArea=document.querySelector('.gameArea');
 const road = gameArea.getBoundingClientRect();
+const rightMargin = 65;
+
+
 /*console.log(gameArea);*/
 startScreen.addEventListener('click',start);
 let player={speed:5,score:0};
@@ -9,8 +12,10 @@ let keys ={ArrowUp:false,ArrowDown:false,ArrowLeft:false,ArrowRight:false}
 
 // Sensores
 const carpos = {x:0, y:0}
-const collide_level = {top: 0, left:0, right:0}
+const collide_level = {top: 0, left:0, right:0, ts: 0}
 const carmove = {moveleft: 0, moveright: 0}
+
+const displayRefrest = Number(1000/frecuencia);
 
 function keyDown(e){
     e.preventDefault();
@@ -83,16 +88,16 @@ function sensorPresencia(car, enemy) {
         collide_level.left = 1;
     }
 
-    if(player.x<(road.width-60)){
+    if(player.x<(road.width-rightMargin)){
         caroffset = {x: car.x + 60, y: car.y};
         collide_level.right = offsetCollide(caroffset, enemy, "y", -120)
     }
     else {
         collide_level.right = 1;
     }
+    collide_level.ts++;
     console.log(collide_level)
-    console.log(carpos)
-    //console.log(carmove)
+    console.log(carmove)
 
     return collide_level
 }
@@ -115,6 +120,10 @@ function endGame(won){
     } else {
         startScreen.innerHTML="<h2>Game Over</h2> Puntaje:"+player.score+" "+"<br>Presione para volver a empezar";
     }
+    collide_level.top = 0;
+    collide_level.left = 0;
+    collide_level.right = 0;
+    collide_level.ts = 0;
 }
 function moveEnemy(car){
     let enemy=document.querySelectorAll('.enemy');
@@ -166,13 +175,13 @@ function gamePlay(){
         if(keys.ArrowLeft && player.x>0 ){
             player.x-=player.speed
         }
-        if(keys.ArrowRight && player.x<(road.width-60)){
+        if(keys.ArrowRight && player.x<(road.width-70)){
             player.x+=player.speed
         }*/
         if(carmove.moveleft && player.x>0 ){
             player.x-=player.speed
         }
-        if(carmove.moveright && player.x<(road.width-60)){
+        if(carmove.moveright && player.x<(road.width-rightMargin)){
             player.x+=player.speed
         }
         car.style.top=player.y+"px";
@@ -186,7 +195,7 @@ function gamePlay(){
         }
 
         //window.requestAnimationFrame(gamePlay);
-        setTimeout( gamePlay, 40 );
+        setTimeout( gamePlay, displayRefrest );
     }
 }
 function start(){
@@ -248,7 +257,7 @@ function randomColor(){
 
 async function update() {
     const data = {
-        carpos: carpos,
+        //carpos: carpos,
         collide_level: collide_level,
     }
     
@@ -270,5 +279,5 @@ async function update() {
 
 (function my_func() {
     update();
-    setTimeout( my_func, 100 );
+    setTimeout( my_func, 1000/frecuencia );
 })();

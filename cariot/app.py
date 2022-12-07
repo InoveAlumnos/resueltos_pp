@@ -15,7 +15,6 @@ app = Flask(__name__)
 
 
 gui_data = {
-    "carpos": {"x": 0, "y":0},
     "collide_level": {"top": 0, "left":0, "right":0},
     "frecuencia": 10
 }
@@ -42,13 +41,10 @@ def gui():
         if 'application/json' not in content_type:
             return Response(status=415)
 
-        carpos = request.json['carpos']
         collide_level = request.json['collide_level']
 
-        gui_data["carpos"] = carpos
         gui_data["collide_level"] = collide_level
 
-        print(controller_data)
         return jsonify(controller_data)
 
     except Exception as e:

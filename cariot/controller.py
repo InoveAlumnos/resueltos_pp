@@ -1,29 +1,22 @@
 import requests
 import time
 
-url = "http://127.0.0.1:5000/controller"
 
-data = {
-    "moveleft": 0,
-    "moveright": 0,
-}
-
-while True:
+def extract(url, controller_data):
     try:
-        resp = requests.post(url, json=data)
+        resp = requests.post(url, json=controller_data)
         if resp.ok == False:
-            break
-    except:        
-        time.sleep(0.1)
-        continue
+            return None
+    except:
+        return None
 
-    time.sleep(0.1)
+    return resp.json()
 
-    gui_data = resp.json()
+
+def transform(gui_data, controller_data):
     collide_level = gui_data["collide_level"]
-    carpos = gui_data["carpos"]
 
-    data = {
+    controller_data = {
             "moveleft": 0,
             "moveright": 0,
         }
@@ -33,17 +26,36 @@ while True:
     collide_level["right"] = 100 if collide_level["right"] == 0 else collide_level["right"]
 
     if collide_level["top"] >= collide_level["left"] and collide_level["top"] >= collide_level["right"]:
-            data = {
+        controller_data = {
             "moveleft": 0,
             "moveright": 0,
         }
     elif collide_level["left"] >= collide_level["top"] and collide_level["left"] >= collide_level["right"]:
-        data = {
+        controller_data = {
             "moveleft": 1,
             "moveright": 0,
         }
     elif collide_level["right"] >= collide_level["top"] and collide_level["right"] >= collide_level["left"]:
-        data = {
+        controller_data = {
             "moveleft": 0,
             "moveright": 1,
         }
+
+    print(gui_data)
+    print(controller_data)
+    return controller_data
+
+if __name__ == "__main__":
+    url = "http://127.0.0.1:5000/controller"
+
+    controller_data = {
+        "moveleft": 0,
+        "moveright": 0,
+    }
+
+    while True:
+        gui_data = extract(url, controller_data)
+        if gui_data is not None:
+            controller_data = transform(gui_data, controller_data)
+            frecuencia = gui_data["frecuencia"]
+            time.sleep(1/frecuencia)
