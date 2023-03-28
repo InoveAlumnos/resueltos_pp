@@ -7,8 +7,9 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-
+engine = sqlalchemy.create_engine("sqlite:///ventas_calzados.db")
 base = declarative_base()
+
 class Venta(base):
     __tablename__ = "venta"
     id = Column(Integer, primary_key=True)
@@ -24,7 +25,6 @@ class Venta(base):
 
 
 def read_db(path):
-    engine = sqlalchemy.create_engine(path)
     Session = sessionmaker(bind=engine)
     session = Session()
     data = session.query(Venta).all()
@@ -44,6 +44,8 @@ def read_db(path):
     gender = np.array(gender)
     size = np.array(size)
     price = np.array(price)
+    
+    session.close()
 
     return country, gender, size, price
 
