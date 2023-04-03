@@ -41,11 +41,11 @@ def blog():
     return render_template('blog.html')
 
 # ---------------- API ------------------------
-@app.route('/post', methods=['GET', 'POST'])
-def post():
+@app.route('/posteos/<usuario>', methods=['GET', 'POST'])
+def post(usuario):
     try:
         if request.method == 'GET':
-            username = request.args.get('username')
+            username = usuario
   
             posts = []
             for post in Post.query.filter_by(username=username).order_by(Post.id.desc()).limit(3):
@@ -53,7 +53,7 @@ def post():
             return jsonify({"posts": posts})
 
         if request.method == 'POST':
-            username = request.form['username']
+            username = usuario
             titulo = request.form['titulo']
             texto = request.form['texto']
 

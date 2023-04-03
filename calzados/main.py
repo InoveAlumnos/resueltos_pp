@@ -35,6 +35,12 @@ def read_db(path):
     price = []
 
     for venta in data:
+        if (not venta.country or
+            not venta.gender or
+            not venta.size or
+            not venta.price):
+            continue
+        
         country.append(venta.country)
         gender.append(venta.gender)
         size.append(venta.size)
@@ -128,7 +134,7 @@ def ventas_genero_pais(countries, gender_target, country, gender):
 
 
 if __name__ == "__main__":
-    country, gender, size, price = read_db("sqlite:///ventas_zapatos.db")
+    country, gender, size, price = read_db("sqlite:///ventas_calzados.db")
 
     countries = paises_unicos(country)
     print(countries)
