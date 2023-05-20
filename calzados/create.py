@@ -76,15 +76,15 @@ from sqlalchemy.orm import sessionmaker
 engine = sqlalchemy.create_engine("sqlite:///ventas_calzados.db")
 base = declarative_base()
 
-class Venta(base):
-    __tablename__ = "venta"
+class Ventas(base):
+    __tablename__ = "ventas"
     id = Column(Integer, primary_key=True)
-    date = Column(String)
-    product_id = Column(Integer)
-    country = Column(String)
-    gender = Column(String)
-    size = Column(String)
-    price = Column(String)
+    fecha = Column(String)
+    producto_id = Column(Integer)
+    pais = Column(String)
+    genero = Column(String)
+    talle = Column(String)
+    precio = Column(String)
 
     def __repr__(self):
         return f"Venta: {self.id}"
@@ -106,27 +106,27 @@ for i, row in enumerate(data):
     if (i % 50) == 0:
         gender = "Unix"
 
-    if (i % 100) == 0:
-        empty_idx += 1
+    # if (i % 100) == 0:
+    #     empty_idx += 1
 
-        if empty_idx == 1:
-            gender = ""    
-        elif empty_idx == 2:
-            size = ""    
-        elif empty_idx == 3:
-            country = ""    
-        elif empty_idx == 4:
-            date = ""
-        else:
-            empty_idx = 0
+    #     if empty_idx == 1:
+    #         gender = ""    
+    #     elif empty_idx == 2:
+    #         size = ""    
+    #     elif empty_idx == 3:
+    #         country = ""    
+    #     elif empty_idx == 4:
+    #         date = ""
+    #     else:
+    #         empty_idx = 0
 
-    venta = Venta(
-        date=date,
-        product_id=product_id,
-        country=country,
-        gender=gender,
-        size=size,
-        price=price,
+    venta = Ventas(
+        fecha=date,
+        producto_id=product_id,
+        pais=country,
+        genero=gender,
+        talle=size,
+        precio=price,
     )
 
     session.add(venta)

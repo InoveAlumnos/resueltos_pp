@@ -47,10 +47,10 @@ def post(usuario):
         if request.method == 'GET':
             username = usuario
   
-            posts = []
+            datos = []
             for post in Post.query.filter_by(username=username).order_by(Post.id.desc()).limit(3):
-                posts.append({"titulo": post.titulo, "texto": post.texto})
-            return jsonify({"posts": posts})
+                datos.append({"titulo": post.titulo, "texto": post.texto})
+            return jsonify(datos)
 
         if request.method == 'POST':
             username = usuario
@@ -62,7 +62,7 @@ def post(usuario):
             db.session.add(post)
             db.session.commit()
 
-            return jsonify({"id": post.id, "titulo": post.titulo, "texto": post.texto})
+            return Response(status=201)
 
     except Exception as e:
         print(e)
